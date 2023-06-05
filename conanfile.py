@@ -15,10 +15,8 @@ class BoostConan(ConanFile):
         if self.settings.os == "Emscripten":
             self.options.shared = False
 
-    def source(self):
-        url = self.conan_data["sources"]["url"].format(version=self.version)
-        conan.tools.files.get(self, url,
-                            **self.conan_data["sources"][self.version], strip_root=True)
+    def export_sources(self):
+        conan.tools.files.copy(self, "*", self.recipe_folder, self.export_sources_folder)
 
     def generate(self):
         tc = CMakeToolchain(self)
